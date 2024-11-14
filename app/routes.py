@@ -170,7 +170,7 @@ def login():
         'username': user.username,
         'access_token': access_token,
         'isLoggedIn': True,
-        'redirect': 'https://ctftachyon-24.vercel.app/profile'
+        'redirect': 'https://ctftachyon-24.vercel.app/dashboard'
     }), 200
     
     
