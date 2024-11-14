@@ -169,6 +169,7 @@ def login():
         'message': 'Login successful',
         'username': user.username,
         'access_token': access_token,
+        'isLoggedIn': True,
         'redirect': 'http://localhost:3000/'
     }), 200
     
