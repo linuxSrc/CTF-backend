@@ -14,7 +14,13 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 jwt = JWTManager(app)
-CORS(app)
+CORS(app, resources={
+    r"/*": {
+        "origins": ["https://ctftachyon-24.vercel.app"],
+        "methods": ["GET", "POST", "PUT", "DELETE"],
+        "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
 
 from app import routes, models
 

@@ -136,7 +136,7 @@ def signup():
         return jsonify({
             'message': 'User created successfully',
             'username': new_user.username,
-            'redirect': 'http://localhost:3000/login'
+            'redirect': 'https://ctftachyon-24.vercel.app/'
 
         }), 201
 
@@ -170,7 +170,7 @@ def login():
         'username': user.username,
         'access_token': access_token,
         'isLoggedIn': True,
-        'redirect': 'http://localhost:3000/'
+        'redirect': 'https://ctftachyon-24.vercel.app/'
     }), 200
     
     
