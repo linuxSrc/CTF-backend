@@ -136,7 +136,7 @@ def signup():
         return jsonify({
             'message': 'User created successfully',
             'username': new_user.username,
-            'redirect': 'https://ctftachyon-24.vercel.app/leaderboard'
+            'redirect': 'https://ctftachyon-24.vercel.app/dashboard'
 
         }), 201
 
