@@ -136,7 +136,7 @@ def signup():
         return jsonify({
             'message': 'User created successfully',
             'username': new_user.username,
-            'redirect': 'https://ctftachyon-24.vercel.app/'
+            'redirect': 'https://ctftachyon-24.vercel.app/leaderboard'
 
         }), 201
 
@@ -170,12 +170,10 @@ def login():
         'username': user.username,
         'access_token': access_token,
         'isLoggedIn': True,
-        'redirect': 'https://ctftachyon-24.vercel.app/'
+        'redirect': 'https://ctftachyon-24.vercel.app/profile'
     }), 200
     
     
-
-# routes.py
 @app.route('/profile', methods=['GET'])
 @jwt_required()
 def get_profile():
