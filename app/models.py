@@ -14,7 +14,7 @@ class Challenge(db.Model):
     difficulty = db.Column(db.String(20), nullable=False)
     status = db.Column(db.String(20), default='Unlocked')
     score = db.Column(db.Integer, default=100)
-    flag = db.Column(db.String(100))
+    flag = db.Column(db.String(100), nullable=False)  # Added flag field
     users = db.relationship('User', secondary='user_challenge', overlaps="challenges")
 
 class UserChallenge(db.Model):
@@ -24,7 +24,7 @@ class UserChallenge(db.Model):
     challenge_id = db.Column(db.Integer, db.ForeignKey('challenge.id'))
     completed = db.Column(db.Boolean, default=False)
     completed_at = db.Column(db.DateTime)
-    
+    submitted_flag = db.Column(db.String(100), nullable=True)  # Track submitted flags
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,7 +46,7 @@ class User(UserMixin, db.Model):
     def get_reset_token(self, expires_in=600):
         reset_token = jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
-            db.app.config['SECRET_KEY'],  # Changed from app.config to db.app.config
+            db.app.config['SECRET_KEY'],
             algorithm='HS256'
         )
         self.reset_token = reset_token
