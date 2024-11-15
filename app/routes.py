@@ -142,7 +142,7 @@ def signup():
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Error creating user'}), 500
+        return jsonify({'message': 'Error creating user', 'error': str(e)}), 500
     
 @app.route('/login', methods=['POST'])
 def login():

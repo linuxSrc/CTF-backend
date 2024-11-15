@@ -6,7 +6,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
     
     # PostgreSQL URL from Render
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = 'postgresql://admin:1EPkSVMTCkHepz9HaUwwL2glUXmFTrIK@dpg-csrgcp0gph6c73b5qt4g-a.oregon-postgres.render.com:5432/ctf_backend_db'
     
     # Handle Render's postgres:// URL format
     if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith('postgres://'):

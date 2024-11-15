@@ -1,14 +1,9 @@
-from typing import Optional
-import sqlalchemy as sa
-import sqlalchemy.orm as so
-from app import db
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, LoginManager
-from time import time
+from werkzeug.security import generate_password_hash, check_password_hash
+from app import db
 import jwt
-from app import app
-from datetime import datetime
-from datetime import timedelta
+from time import time
+from datetime import datetime, timedelta
 
 login = LoginManager()
 
@@ -20,7 +15,7 @@ class Challenge(db.Model):
     status = db.Column(db.String(20), default='Unlocked')
     score = db.Column(db.Integer, default=100)
     flag = db.Column(db.String(100))
-    users = db.relationship('User', secondary='user_challenge')
+    users = db.relationship('User', secondary='user_challenge', overlaps="challenges")
 
 class UserChallenge(db.Model):
     __tablename__ = 'user_challenge'
@@ -36,7 +31,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-    challenges = db.relationship('Challenge', secondary='user_challenge')
+    challenges = db.relationship('Challenge', secondary='user_challenge', overlaps="users")
     total_score = db.Column(db.Integer, default=0)
     
     def set_password(self, password):
@@ -51,7 +46,7 @@ class User(UserMixin, db.Model):
     def get_reset_token(self, expires_in=600):
         reset_token = jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'],
+            db.app.config['SECRET_KEY'],  # Changed from app.config to db.app.config
             algorithm='HS256'
         )
         self.reset_token = reset_token
@@ -62,7 +57,7 @@ class User(UserMixin, db.Model):
     @staticmethod
     def verify_reset_token(token):
         try:
-            id = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
+            id = jwt.decode(token, db.app.config['SECRET_KEY'], algorithms=['HS256'])['reset_password']
             return User.query.get(id)
         except:
             return None
